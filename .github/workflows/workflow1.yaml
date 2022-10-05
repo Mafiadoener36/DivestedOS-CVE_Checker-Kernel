@@ -1,0 +1,41 @@
+name: workflow0
+
+on:  [workflow_dispatch] #[push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout the code/initialize repo for use
+        uses: actions/checkout@v2
+
+#      - name: Open working temp dir
+#        working-directory: temp
+
+#      - name: Installing Dependencies
+#        run: sudo apt-get install -y git && sudo apt install -y python2 && sudo apt install -y python3
+
+      - name: ls + dir
+        #working-directory: temp
+        run: ls -la #ls && dir
+
+      - name: make make executable
+        run: sudo chmod +x ./build.gradle
+
+      - name: fetch git for later checkout/fix it # propably BS
+        run: git fetch && git remote update
+
+      - name: Build the app
+#        working-directory: temp
+        run: ./build.gradle
+        
+      - name: ls + dir
+        run: ls -la
+
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug build
+          path: out/
